@@ -3,122 +3,99 @@ const operationButtons = document.querySelectorAll('button.operation');
 const memoryButtons = document.querySelectorAll('memory');
 const clearButton = document.querySelector('.clear');
 const equalSign = document.querySelector('.equal');
+const decimalNumber = document.querySelector('.decimal');
 
 
 let firstNumber = '';
 let secondNumber = '';
 let operationSelected = '';
-
-
-clearButton.addEventListener('click', () => {
-        document.querySelector('input').value = '';
-        firstNumber = '';
-        secondNumber ='';
-        operationSelected ='';
-            });
+let dotCount = 0;
 
 numberButtons.forEach(numberButton => numberButton.addEventListener('click', typeNumbers));
-operationButtons.forEach(operationButtons => operationButtons.addEventListener('click', operationDecision));
+operationButtons.forEach(operationButtons => operationButtons.addEventListener('click', operationAssigned));
 equalSign.addEventListener('click', operationAction);
+decimalNumber.addEventListener('click', decimalCheck);
+
+clearButton.addEventListener('click', () => {
+    document.querySelector('input').value = '';
+    firstNumber = '';
+    secondNumber = '';
+    operationSelected ='';
+    dotCount = 0;
+        });
+
+function decimalCheck(){
+    if(firstNumber !== '' && secondNumber == '' && dotCount == 0){
+            firstNumber += decimalNumber.value;
+            document.querySelector('input').value = firstNumber;
+            dotCount ++;
+            } else if(operationSelected !== ''){
+                    if (1 >= dotCount || secondNumber.indexOf(".") == -1){
+                    secondNumber += decimalNumber.value;
+                    document.querySelector('input').value = secondNumber;
+                    dotCount ++;
+                        } 
+           }   
+}
         
 function typeNumbers(e){
         let numberSelection = e.target.value;
-        console.log(numberSelection);
-        
-       if(firstNumber !== ''){
+        if(operationSelected !== ''){
+            secondNumber += numberSelection;
             document.querySelector('input').value = '';
-            while (secondNumber == ''){
-            document.querySelector('input').value += numberSelection;
-            let finalNumber = document.querySelector('input').value;
-            console.log(finalNumber);
-            }
-         }
-            else {
-                document.querySelector('input').value += numberSelection;
-                let finalSecondNumber = document.querySelector('input').value;
-                console.log(finalSecondNumber);
-            }          
+            document.querySelector('input').value = secondNumber;
+            console.log('Second Number:' + secondNumber);
+            }else {
+                firstNumber += numberSelection;
+                document.querySelector('input').value = firstNumber;
+                console.log('First Number:' + firstNumber);
+                }          
 };
 
-function operationDecision(e){
-        firstNumber = document.querySelector('input').value;
-        console.log('First Number in Operaration Decision:' + firstNumber);
-        if (firstNumber == '' && secondNumber ==''){
-        } 
-            else if (firstNumber!== '' && secondNumber == ''){
+function operationAssigned(e){
+        if (firstNumber == '' && secondNumber ==''){} 
+            else if (firstNumber !== '' && secondNumber == '' ){
             operationSelected = e.target.textContent;
-            console.log('Operation Selected in the function:' + operationSelected);
-               
-            }
-                else if (firstNumber !== '' && secondNumber !== ''){
-                secondNumber = document.querySelector('input').value;
-                console.log('Second Number:' + secondNumber);
-                }
-
+            console.log('operation seclected: ' + operationSelected);
+            dotCount ++;
+            } else if(firstNumber !=='' && secondNumber !==''){
+                    operationAction(operationSelected);
+                    operationSelected = e.target.textContent;
+                    dotCount ++;
+                    console.log('operation seclected: ' + operationSelected);
+                    }
         }
 
 function operationAction(){
-    secondNumber = document.querySelector('input').value;
-    console.log('Second Number:' + secondNumber);
-    console.log('First Number:' + firstNumber);
-    console.log('Operation Selected in Operation ACTION :' + operationSelected);
     switch (operationSelected){
         case 'X':
             let product = firstNumber * secondNumber;
-            console.log(product);
             document.querySelector('input').value = product;
+            firstNumber = product;
+            secondNumber = '';
             break;
         case '/':
             let division = firstNumber / secondNumber;
-            console.log(division);
             document.querySelector('input').value = division;
+            firstNumber = division;
+            secondNumber = '';
             break;
         case '+':
-            let addition = parseInt(firstNumber) + parseInt(secondNumber);
-            console.log(addition);
+            let addition = parseFloat(firstNumber) + parseFloat(secondNumber);
             document.querySelector('input').value = addition;
+            firstNumber = addition;
+            secondNumber = '';
             break;
         case '-':
             let subtraction = firstNumber - secondNumber;
-            console.log(subtraction);
             document.querySelector('input').value = subtraction;
+            firstNumber = subtraction;
+            secondNumber = '';
             break;
     }   
 }
-// function multiplication(firstNumber,secondNumber){
-//     return firstNumber * secondNumber;
-// };
 
-// function division(firstNumber,secondNumber){
-//     return firstNumber / secondNumber;
-// };
-
-// function addition(firstNumber,secondNumber){
-//     return firstNumber + secondNumber;
-// };
-
-// function subtraction(firstNumber,secondNumber){
-//     return firstNumber - secondNumber;
-// };
-
-// ITERATING THROUGH HTML COLLECTION WITH EVENT LISTENER
-// for (numberButton of numberButtons) {
-//     numberButton.addEventListener('click', (e) => {
-//                 const newVar = e.target.value;
-//                 console.log(newVar);
-//             })
-// }
-
-
-
-// HOW TO CALL AN ANNONIMOUS FUNCTION IN ANOTHER FUNCTION?
-// numberButtons.forEach(numberButton => {
-//     numberButton.addEventListener('click', () => {
-//             let currentNumberDisplay = numberButton.textContent;
-//             console.log(currentNumberDisplay);
-//             document.querySelector('input').value += currentNumberDisplay;
-//             let finalNumber = document.querySelector('input').value;
-//             console.log(finalNumber);
-//             return finalNumber;
-//     });
-// });
+//   console.log('Result:' + subtraction);
+//   console.log('First Number:' + firstNumber);
+//   console.log('Second Number:' + secondNumber);
+  

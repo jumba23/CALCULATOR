@@ -44,6 +44,11 @@ button {
     background-color: rgb(198, 243, 228);
     color: black;
 }
+
+.decimal {
+    background-color: rgb(198, 243, 228);
+    color: black;
+}
 .clear {
     background-color: rgb(154, 247, 216);
     color: black;
