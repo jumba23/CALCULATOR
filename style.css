@@ -1,5 +1,10 @@
+html, body{
+    height: 100%;
+    margin: 0;
+  }
+
 .calculator{
-    max-width: 400px;
+    width: 480px;
     background: rgb(190, 190, 175);
     margin: 0 auto;
  }
@@ -56,4 +61,24 @@ button {
 
 .memory {
     background-color: rgb(193, 164, 219);
+}
+
+@media screen and (max-width: 400px) {
+    .calculator{
+        width: 480px;
+        height: 100%;
+     }
+     input {
+        height: 32%;
+        font-size: 120px;
+    }
+    .calculator-buttons {
+        height: 101%;
+        font-size: 120px;
+    }
+    button {
+        padding: 10px;
+        font-size: 50px;
+    }
+
 }
