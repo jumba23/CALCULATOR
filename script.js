@@ -9,7 +9,7 @@ const decimalNumber = document.querySelector('.decimal');
 let firstNumber = '';
 let secondNumber = '';
 let operationSelected = '';
-let dotCount = 0;
+
 
 numberButtons.forEach(numberButton => numberButton.addEventListener('click', typeNumbers));
 operationButtons.forEach(operationButtons => operationButtons.addEventListener('click', operationAssigned));
@@ -21,20 +21,15 @@ clearButton.addEventListener('click', () => {
     firstNumber = '';
     secondNumber = '';
     operationSelected ='';
-    dotCount = 0;
         });
 
 function decimalCheck(){
-    if(firstNumber !== '' && secondNumber == '' && dotCount == 0){
-            firstNumber += decimalNumber.value;
+     if(firstNumber.indexOf('.') == -1 && operationSelected == ''){
+            firstNumber += '.';
             document.querySelector('input').value = firstNumber;
-            dotCount ++;
-            } else if(operationSelected !== ''){
-                    if (1 >= dotCount || secondNumber.indexOf(".") == -1){
-                    secondNumber += decimalNumber.value;
+            } else if(secondNumber.indexOf('.') == -1  && operationSelected !== ''){
+                    secondNumber += '.';
                     document.querySelector('input').value = secondNumber;
-                    dotCount ++;
-                        } 
            }   
 }
         
@@ -57,11 +52,9 @@ function operationAssigned(e){
             else if (firstNumber !== '' && secondNumber == '' ){
             operationSelected = e.target.textContent;
             console.log('operation seclected: ' + operationSelected);
-            dotCount ++;
             } else if(firstNumber !=='' && secondNumber !==''){
                     operationAction(operationSelected);
                     operationSelected = e.target.textContent;
-                    dotCount ++;
                     console.log('operation seclected: ' + operationSelected);
                     }
         }
@@ -73,24 +66,36 @@ function operationAction(){
             document.querySelector('input').value = product;
             firstNumber = product;
             secondNumber = '';
+            console.log('Result:' + product);
+            console.log('First Number:' + firstNumber);
+            console.log('Second Number:' + secondNumber);
             break;
         case '/':
             let division = firstNumber / secondNumber;
             document.querySelector('input').value = division;
             firstNumber = division;
             secondNumber = '';
+            console.log('Result:' + division);
+            console.log('First Number:' + firstNumber);
+            console.log('Second Number:' + secondNumber);
             break;
         case '+':
             let addition = parseFloat(firstNumber) + parseFloat(secondNumber);
             document.querySelector('input').value = addition;
             firstNumber = addition;
             secondNumber = '';
+            console.log('Result:' + addition);
+            console.log('First Number:' + firstNumber);
+            console.log('Second Number:' + secondNumber);
             break;
         case '-':
             let subtraction = firstNumber - secondNumber;
             document.querySelector('input').value = subtraction;
             firstNumber = subtraction;
             secondNumber = '';
+            console.log('Result:' + subtraction);
+            console.log('First Number:' + firstNumber);
+            console.log('Second Number:' + secondNumber);
             break;
     }   
 }
