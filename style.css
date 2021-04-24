@@ -30,7 +30,9 @@ button {
     border-radius: 2px;
     font-size: 30px;
     cursor: pointer;
-}
+    }
+
+button:hover { background: rgb(161, 161, 161); }
 
 .calculator-buttons {
     padding: 0px;
