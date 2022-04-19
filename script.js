@@ -1,52 +1,59 @@
-const numberButtons = document.querySelectorAll('.number');
-const operationButtons = document.querySelectorAll('.operation');
-const memoryButtons = document.querySelectorAll('.memory');
-const clearButton = document.querySelector('.clear');
-const equalSign = document.querySelector('.equal');
-const decimalNumber = document.querySelector('.decimal');
-
+const display = document.querySelector('input');
 let firstNumber = '';
 let secondNumber = '';
 let operationSelected = '';
 let memoryNumber = '';
 
-numberButtons.forEach(numberButton => numberButton.addEventListener('click', typeNumbers));
-operationButtons.forEach(operationButton => operationButton.addEventListener('click', operationAssigned));
-memoryButtons.forEach(memoryButton => memoryButton.addEventListener('click', memoryCall));
-equalSign.addEventListener('click', operationAction);
-decimalNumber.addEventListener('click', decimalCheck);
+document.querySelectorAll('.number').forEach(numberButton => numberButton.addEventListener('click', setNumbers));
+document.querySelectorAll('.operation').forEach(operationButton => operationButton.addEventListener('click', setOperation));
+document.querySelectorAll('.memory').forEach(memoryButton => memoryButton.addEventListener('click', memoryCall));
+document.querySelector('.decimal').addEventListener('click', decimalCheck);
+document.querySelector('.equal').addEventListener('click', () => {
+    if (isSet(firstNumber) && isSet(operationSelected) && isSet(secondNumber)){
+        const result = calculate();
+        firstNumber = result;
+        secondNumber = '';
+        operationSelected = '';
+        display.value = firstNumber;
 
-function typeNumbers(e) {
-    let numberSelection = e.target.value;
-    if (operationSelected !== '') {
+    }
+});
+
+function setNumbers(e) {
+    const numberSelection = e.target.value;
+    if (operationSelected) {
         secondNumber += numberSelection;
-        document.querySelector('input').value = '';
-        document.querySelector('input').value = secondNumber;
+        display.value = secondNumber;
     } else {
         firstNumber += numberSelection;
-        document.querySelector('input').value = firstNumber;
+        display.value = firstNumber;
     }
 };
 
-function operationAssigned(e) {
-    if (firstNumber == '' && secondNumber == '') { }
-    else if (firstNumber !== '' && secondNumber == '') {
+function setOperation(e) {
+    if (isSet(firstNumber) && !isSet(secondNumber)) {
         operationSelected = e.target.textContent;
-    } else if (firstNumber !== '' && secondNumber !== '') {
-        operationAction(operationSelected);
-        operationSelected = e.target.textContent;     
-    } else if (firstNumber == '' & secondNumber == '') {
-        firstNumber = document.querySelector('input').value;
+        return;
+    } 
+        
+    if (isSet(firstNumber) && isSet(operationSelected) && isSet(secondNumber)) {
+        const result = calculate();
+        firstNumber = result;
+        secondNumber = '';
+        operationSelected = e.target.textContent;
+        display.value = firstNumber;
     }
 }
 
 function decimalCheck() {
-    if (operationSelected == '' && firstNumber.indexOf('.') == -1) {
+    if (!isSet(operationSelected) && !haveDecimal(firstNumber)) {
         firstNumber += '.';
-        document.querySelector('input').value = firstNumber;
-    } else if (secondNumber.indexOf('.') == -1 && operationSelected !== '') {
+        display.value = firstNumber;
+    } 
+    
+    if (isSet(operationSelected) && !haveDecimal(secondNumber)) {
         secondNumber += '.';
-        document.querySelector('input').value = secondNumber;
+        display.value = secondNumber;
     }
 }
 
@@ -54,65 +61,67 @@ function memoryCall(e) {
     memoryButton = e.target.value;
     switch (memoryButton) {
         case 'M+':
-            if (firstNumber !== '') {
-                memoryNumber = document.querySelector('input').value;
+            if (display.value) {
+                memoryNumber = add(memoryNumber, display.value);
             }
             break;
         case 'M-':
-            memoryNumber = '';
-            break;
+            if (display.value) {
+                memoryNumber = subtract(memoryNumber, display.value);
+            }
         case 'MR':
-            if (memoryNumber == '') { }
-            else if (operationSelected == '') {
-                document.querySelector('input').value = memoryNumber;
+            if (!isSet(operationSelected)) {
+                display.value = memoryNumber;
                 firstNumber = memoryNumber;
             }
-            else if (secondNumber == '') {
+            else if (!isSet(secondNumber)) {
                 secondNumber = memoryNumber;
-                document.querySelector('input').value = memoryNumber;
+                display.value = memoryNumber;
             }
             break;
     }
 }
 
-function operationAction() {
-    if (secondNumber != '') {
-        switch (operationSelected) {
-            case 'X':
-                let product = firstNumber * secondNumber;
-                document.querySelector('input').value = product;
-                irstNumber = product;
-                operationSelected = '';
-                secondNumber = '';
-                break;
-            case '/':
-                let division = firstNumber / secondNumber;
-                document.querySelector('input').value = division;
-                firstNumber = division;
-                operationSelected = '';
-                secondNumber = '';
-                break;
-            case '+':
-                let addition = parseFloat(firstNumber) + parseFloat(secondNumber);
-                document.querySelector('input').value = addition;
-                firstNumber = addition;
-                operationSelected = '';
-                secondNumber = '';
-                break;
-            case '-':
-                let subtraction = firstNumber - secondNumber;
-                document.querySelector('input').value = subtraction;
-                firstNumber = subtraction;
-                operationSelected = '';
-                secondNumber = '';
-                break;
-        }
-    }
+function calculate() {
+    switch (operationSelected) {
+    case 'X':
+        return multiply(firstNumber, secondNumber);
+    case '/':
+        return divide(firstNumber, secondNumber); 
+    case '+':
+        return add(firstNumber, secondNumber);
+    case '-':
+        return subtract(firstNumber, secondNumber);
+}
 }
 
-clearButton.addEventListener('click', () => {
-    document.querySelector('input').value = '';
+function add(numberOne, numberTwo){
+    return `${Number(numberOne) + Number(numberTwo)}`;
+}
+
+function subtract(numberOne, numberTwo){
+    return `${Number(numberOne) - Number(numberTwo)}`;
+}
+
+function multiply(numberOne, numberTwo){
+    return `${Number(numberOne) * Number(numberTwo)}`;
+}
+
+function divide(numberOne, numberTwo){
+    return `${Number(numberOne) / Number(numberTwo)}`;
+}
+
+document.querySelector('.clear').addEventListener('click', () => {
+    display.value = '';
     firstNumber = '';
     secondNumber = '';
     operationSelected = '';
 });
+
+function isSet(mathSymbol) {
+    return mathSymbol !== "";
+}
+
+function haveDecimal(string) {
+    return string.indexOf('.') >= 0;
+}
