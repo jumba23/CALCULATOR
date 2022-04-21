@@ -1,8 +1,7 @@
 # CALCULATOR
 Simple Calculator App. Written using HTML, CSS, and Javascript languages.
 
-# Try It 
-[play](https://jumba23.github.io/CALCULATOR/)
+### Try It - [here](https://jumba23.github.io/CALCULATOR/)
 
 # Application 
 <p align="center">
