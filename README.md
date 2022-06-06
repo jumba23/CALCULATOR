@@ -16,4 +16,4 @@ Simple Calculator App. Written using HTML, CSS, and Javascript languages.
 This application was one of my favorite so far. Here, I felt more comfortable working with functions and methods. It was definitely a challenging project, starting with SCC grid layout, combined with intricacies of JavaScript logic. Time spent on it was more than rewarding. Feel free to enjoy the application.
 
 # Author
-Goran Cvetic - Software Developer - [LinkedIn](https://www.linkedin.com/in/goran-cvetic-9aaa4288/)
+Goran Cvetic - Software Developer - [LinkedIn](https://www.linkedin.com/in/goran-cvetic/)
